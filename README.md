@@ -1,2 +1,3 @@
 # animefun
- fiddling with solid js
+
+picked some funny APIs to play with solid js

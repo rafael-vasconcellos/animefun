@@ -1,0 +1,11 @@
+input[type=text] ~ section {
+    display: none;
+}
+
+input[type=text]:focus ~ section {
+    display: block;
+}
+
+input[type=text] ~ section:active {
+    display: block;
+}

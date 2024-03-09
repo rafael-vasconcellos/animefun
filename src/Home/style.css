@@ -1,0 +1,19 @@
+input:focus-visible {
+    outline: 0;
+}
+
+button {
+    background-color: var(--secondary-color);
+    border-radius: 999px;
+    font-weight: bold;
+    padding: 7px 14px;
+    cursor: pointer;
+}
+
+button.opacity-45 {
+    cursor: default;
+}
+
+button:not(.opacity-45):hover {
+    background-color: var(--primary-color);
+}

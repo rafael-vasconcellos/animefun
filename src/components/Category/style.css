@@ -1,0 +1,9 @@
+.overflow-x-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+@media screen and (hover: none) { 
+    .category > div.flex > div.cursor-pointer {
+        display: none;
+    }
+}
