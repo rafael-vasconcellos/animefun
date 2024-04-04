@@ -58,7 +58,7 @@ export default function Search() {
             <input type="text" placeholder="Digite sua busca..." 
             value={queryParams.q ?? ''} onInput={search} onFocus={e => { 
                 if (!searchResults()?.chars?.length && !searchResults().animes?.length) { search(e) }
-            } } class="w-full h-8 rounded-full px-5 text-black" style={ {border: '1px solid rgb(161, 161, 170)'} } />
+            } } class="w-full h-10 px-5 rounded-full text-black" style={ {border: '1px solid rgb(161, 161, 170)'} } />
 
             <Show when={searchResults()?.chars?.length || searchResults().animes?.length}>
                 <Results data={searchResults()} />

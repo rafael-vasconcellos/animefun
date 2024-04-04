@@ -38,10 +38,10 @@ export default function Home() {
     return (
         <>
             <section class="flex justify-center">
-                <div class="w-1/2 p-3 flex flex-col gap-4 items-center relative">
+                <div class="w-[600px] p-3 flex flex-col gap-4 items-center relative">
                         <Search />
                         <div class="flex gap-2">
-                                <button class="flex gap-2 items-center" onClick={() => { 
+                                <button class="flex gap-2 items-center min-w-fit" onClick={() => { 
                                     const input: HTMLInputElement | null = document.querySelector('input[type=search]')
                                     if ( (input?.value !== queryParams?.q) && input?.value ) { navigate(`/search?q=${input.value}`) }
                                     if (visibility() !== 1) { setVisibility(1) } // caso a pesquisa já tenha sido feita (queryParams?.q === quotesQuery())
@@ -51,19 +51,19 @@ export default function Home() {
                                     setItem({})
                                 } }>
                                     <div class="w-5 h-5 bg-contain bg-no-repeat" style={ {"background-image": `url(quote.png)`} } />
-                                    Quote
+                                    <span class="text-nowrap">Quote</span>
                                 </button>
 
-                                <button class="flex items-center gap-1" onClick={ () => {
+                                <button class="flex gap-1 items-center min-w-fit" onClick={ () => {
                                     if (visibility() !== 2) { setVisibility(2) }
                                 } }>
                                     <img src="https://i.ibb.co/R2ZWHm1/yor.png" class="h-5" />
-                                    Random Waifu
+                                    <span class="text-nowrap">Random Waifu</span>
                                 </button>
 
-                                <button class="opacity-45 flex items-center gap-1" ref={lucky}>
+                                <button class="opacity-45 flex gap-1 items-center min-w-fit" ref={lucky}>
                                     <img src="heart.png" class="h-5" />
-                                    Estou com sorte
+                                    <span class="text-nowrap">Estou com sorte</span>
                                 </button>
                         </div>
                 </div>
