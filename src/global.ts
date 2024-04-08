@@ -239,17 +239,23 @@ export async function get_images(link: string, categories: ICategories, mode: 'l
 export async function sfwHandler(freshNew: string[]) {
     const images = await get_images(
         `https://nekos.best/api/v2/{category}?amount=${"4"}`, 
-        { sfw: freshNew.filter(e => categoriesFull.sfw?.includes(e)) }, 
+        { sfw: freshNew?.filter(e => categoriesFull.sfw?.includes(e)) }, 
         'cats'
     )
 
     const images2 = await get_images(
         `https://api.waifu.im/search?included_tags={category}&many=true`, 
-        { sfw: freshNew.filter(e => test.sfw?.includes(e)) }, 
+        { sfw: freshNew?.filter(e => test.sfw?.includes(e)) }, 
         'cats'
     )
-    return Object.assign(images, images2)
+
+    const result = { ...images }
+    Object.keys(images2).forEach(category => { 
+        result[category] = [ ...images[category], ...images2[category] ]
+    })
+    return result
 }
+
 
 export async function nsfwHandler(freshNew: string[]) {
     const images = await get_images(

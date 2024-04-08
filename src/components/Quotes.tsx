@@ -11,12 +11,10 @@ type IQuote = {
 }
 
 export default function Quotes( props: {search?: string} ) { 
-    const [ quotes, setQuotes ] = createSignal<IQuote[] | null>([])
+    const [ quotes, setQuotes ] = createSignal<IQuote[]>([])
 
     createEffect( async() => { 
-        if (quotes()?.length) { setQuotes([]) }
-
-        if (props.search) {
+        if (props.search) { 
             const anime: IQuote[] | [] = await fetch("https://animechan.xyz/api/quotes/anime?title="+props.search)
             .then(response => {
                 if (response.status === 200) { return response.json() }
@@ -28,8 +26,9 @@ export default function Quotes( props: {search?: string} ) {
                 if (response.status === 200) { return response.json() }
                 else { return [] }
             } )
+
             if (anime.length || character.length) { setQuotes( [...anime, ...character].sort(randomize) ) }
-            else { setQuotes(null) }
+
 
         } else if (!props.search) { 
             const response = await fetch("https://animechan.xyz/api/random").then(response => {
@@ -47,7 +46,7 @@ export default function Quotes( props: {search?: string} ) {
                 <Show when={ (quotes()?.length ?? 0) > 0 } fallback={<Placeholder />}>
                     <For each={quotes()}>
                         { (quote: IQuote) => 
-                            <div class="bg-slate-700 w-1/2 px-4 my-10 mx-6 rounded-2xl flex gap-4">
+                            <div class="bg-zinc-800 w-1/2 px-4 my-10 mx-6 rounded-2xl flex gap-4">
                                 <Show when={selectedItem().images?.webp.large_image_url ?? selectedItem().images?.webp.image_url}>
                                     <div style={ {"background-image": `url(${selectedItem().images?.webp.large_image_url ?? selectedItem().images?.webp.image_url})`} }
                                     class="bg-contain bg-no-repeat my-4 min-w-[150px] w-[150px] h-[225px]" />
@@ -72,7 +71,7 @@ function Placeholder() {
 
     return (
         <For each={arr}>
-            { e => <div class="bg-zinc-600 w-1/2 h-40 px-4 my-10 mx-6 rounded-2xl animate-pulse" /> }
+            { e => <div class="bg-zinc-800 w-1/2 h-40 px-4 my-10 mx-6 rounded-2xl animate-pulse" /> }
         </For>
     )
 }

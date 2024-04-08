@@ -14,7 +14,7 @@ type IResultsProps = {
 export default function Results( props: IResultsProps ) { 
 
     return (
-        <section class="absolute z-10 top-14 h-[454px] w-full overflow-y-scroll bg-zinc-500 rounded-xl">
+        <section class="bg-zinc-700 absolute z-10 top-14 overflow-y-scroll h-[454px] w-full py-2 rounded-xl">
             <For each={props.data.chars}>{item => <CharHCard char={item} />}</For>
             <For each={props.data.animes}>{item => <AnimeHCard anime={item} />}</For>
         </section>

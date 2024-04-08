@@ -1,5 +1,5 @@
 import { createStore, produce } from 'solid-js/store'
-import { For, Show, createEffect, createSignal } from 'solid-js'
+import { For, Show, createEffect, createMemo, createSignal } from 'solid-js'
 import { ICategoriesStore } from '../global'
 import List from './List'
 import Panel from './Panel'
@@ -10,7 +10,7 @@ import { visibility } from '../Home'
 type IImagesProps = { 
     tagList: string[]
     callback(freshNew: string[]): Promise<any>
-    visibilityC: number
+    visibilityC?: number
     placeholder?: string[]
     search?: string
 }
@@ -19,11 +19,12 @@ type IImagesProps = {
 
 export default function Images( {placeholder, tagList, callback, visibilityC, search}: IImagesProps ) { 
     const [ filteredCategories, setFilter ] = createSignal<string[]>([])
-
     const [ requests, uptadeRequests ] = createStore<ICategoriesStore>( { 
         cats: {},
         list: []
     } )
+    const condition = createMemo( () => visibilityC? visibility() === visibilityC : true )
+
 
     createEffect( async() => { 
         const freshNew = filteredCategories().filter(c =>  (!requests.cats[c] || requests.cats[c]?.length === 0) )
@@ -41,12 +42,14 @@ export default function Images( {placeholder, tagList, callback, visibilityC, se
             const images = await callback(freshNew)
             if (images) { uptadeRequests('cats', images) }
         }
+
+        
     } )
 
 
 
     return ( 
-        <Show when={visibility() === visibilityC}>
+        <Show when={condition()}>
             <main class='flex gap-4'>
                 <Panel tagList={tagList} filteredCategories={filteredCategories} setFilter={setFilter} />
                 <div>

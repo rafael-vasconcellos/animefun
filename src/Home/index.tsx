@@ -73,6 +73,7 @@ export default function Home() {
             <Display title="Trending anime" type="anime" />
             <Display title="Trending Anime Characters" type="characters" />
             {/* <Categories /> */}
+            {/* recolhe o conteúdo */}
             <Show when={visibility() !== 0}>
                 <button class="relative z-0 left-[47%] my-4" onClick={() => { 
                     setVisibility(0)
@@ -83,12 +84,15 @@ export default function Home() {
                     </svg>
                 </button>
             </Show>
+
+
+            {/* conteúdo main */}
             <Show when={visibility() === 1}>
                 <Quotes search={quotesQuery()} />
             </Show>
             <Images visibilityC={2} tagList={tagList} callback={sfwHandler} placeholder={ ['waifu'] } />
-            <Show when={queryParams?.nsfw === 'on'}>
-                <Images visibilityC={3} tagList={categoriesNSFW.nsfw} callback={nsfwHandler} placeholder={ ['hentai'] } />
+            <Show when={visibility()===3}>
+                <Images tagList={categoriesNSFW.nsfw} callback={nsfwHandler} placeholder={ ['hentai'] } />
             </Show>
 
             {/* <Show when={visibility() === 3 && nsfw().length > 0}>

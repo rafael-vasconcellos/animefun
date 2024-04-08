@@ -3,13 +3,17 @@
 @tailwind utilities;
 
 
-body {
-    background-color: #27272a;
+body { 
+    background-color: #18181b;
+    /* background-color: #0d1117; */
     color: white;
 }
 
 :root { 
-    --primary-color: #22d3ee;
-    --secondary-color: #334155;
+    --primary-color: #4493f8;
+    --secondary-color: #1f2937;
+    /* --third-color: #161B22; */
+
+    --primary-color-legacy: #22d3ee;
     --primary-alt: #0ea5e9;
 }

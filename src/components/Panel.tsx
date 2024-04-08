@@ -12,7 +12,7 @@ export default function Panel( {tagList, filteredCategories, setFilter}: {tagLis
 
 
     return ( 
-        <ul class="w-fit h-fit py-3 m-1 bg-zinc-600 rounded-2xl">
+        <ul class="w-fit h-fit py-3 mb-6 m-1 bg-zinc-700 rounded-2xl">
             {/* <li class="mb-3 pb-1 flex gap-6 justify-between" style={ {"border-bottom": '1px solid black'} }>
                 <label for={"panel-amount"} class="px-2">amount:</label>
                 <input type="number" min={1} value={amount()} id={"panel-amount"}

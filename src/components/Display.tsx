@@ -26,7 +26,7 @@ export default function Display( {type, title}: IDisplayProps ) {
 
     return (
         <Show when={visibility() === 0}>
-            <div class="py-4">
+            <div class="py-4 text-primary">
                 <h1 class="my-4 mx-2 font-bold text-2xl">{title}</h1>
                 <div class="flex flex-wrap gap-4 w-full px-3">
                     <Show when={data().length > 0} fallback={<Placeholder />}>

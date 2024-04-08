@@ -18,7 +18,7 @@ export function AnimeHCard( {anime}: {anime: IAnime} ) { console.log(anime.rank)
     const navigate = useNavigate()
 
     return (
-        <div class={`py-1 px-2 flex gap-2 relative cursor-pointer hover:bg-cyan-400`} onClick={() => { 
+        <div class={`py-1 px-2 flex gap-2 relative cursor-pointer hover:bg-primary`} onClick={() => { 
             if (!anime?.title_english?.toLowerCase()) { return }
             click_handler(anime)
             navigate(`/search?q=${anime?.title_english?.toLowerCase()}`)
@@ -47,7 +47,7 @@ export function CharHCard( {char}: {char: ICharacter} ) {
     const navigate = useNavigate()
 
     return (
-        <div class={`py-1 px-2 flex gap-2 relative cursor-pointer hover:bg-cyan-400`} onClick={() => { 
+        <div class={`py-1 px-2 flex gap-2 relative cursor-pointer hover:bg-primary`} onClick={() => { 
             if (!char?.name?.toLowerCase()) { return }
             click_handler(char)
             navigate(`/search?q=${char?.name?.toLowerCase()}`)
