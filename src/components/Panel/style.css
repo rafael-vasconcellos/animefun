@@ -1,0 +1,12 @@
+button:focus-visible { 
+    outline: 0;
+}
+
+.min-h-screen > section > button:hover {
+    background-color: var(--primary-color);
+}
+
+@keyframes slideLeft { 
+    from { transform: translate(-65%); }
+    to { transform: translate(0px); }
+}

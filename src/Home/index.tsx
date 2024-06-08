@@ -38,7 +38,7 @@ export default function Home() {
     return (
         <>
             <section class="flex justify-center">
-                <div class="w-[600px] p-3 flex flex-col gap-4 items-center relative">
+                <div class="max-w-[600px] w-screen py-4 px-8 flex flex-col gap-4 items-center relative">
                         <Search />
                         <div class="flex gap-2">
                                 <button class="flex gap-2 items-center min-w-fit" onClick={() => { 

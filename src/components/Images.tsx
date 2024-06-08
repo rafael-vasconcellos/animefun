@@ -52,7 +52,7 @@ export default function Images( {placeholder, tagList, callback, visibilityC, se
         <Show when={condition()}>
             <main class='flex gap-4'>
                 <Panel tagList={tagList} filteredCategories={filteredCategories} setFilter={setFilter} />
-                <div>
+                <div class='w-full min-w-[360px]'>
                     <For each={ Object.keys(requests.cats) }>
                         { categoryName => <List name={categoryName} list={requests.cats[categoryName]} /> }
                     </For>
