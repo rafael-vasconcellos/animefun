@@ -261,7 +261,7 @@ export async function sfwHandler(freshNew: string[]) {
 
     const result = { ...images }
     Object.keys(images2).forEach(category => { 
-        result[category] = [ ...result[category], ...images2[category] ]
+        result[category] = [ ...result[category] ?? [], ...images2[category] ]
     })
 
     return result
