@@ -11,7 +11,7 @@ export default function Category( {title, genreId}: {title: string, genreId: str
     createEffect( async() => { 
         const response: ITop<IAnime> = await fetch(`https://api.jikan.moe/v4/anime?genres=${genreId}`).then(response => { 
             if (response.status === 200) { return response.json() }
-            else { return {} as any }
+            else { return {} as Record<string, unknown> }
         } )
 
         if (response?.data?.length) { setData(response.data) }

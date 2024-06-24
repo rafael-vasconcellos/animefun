@@ -2,6 +2,7 @@ import { Accessor, For, Setter, Show, createMemo, createSignal } from "solid-js"
 import './style.css'
 
 
+
 export default function Panel( {tagList, filteredCategories, setFilter}: {tagList: string[], filteredCategories: Accessor<string[]>, setFilter: Setter<string[]>} ) { 
     const [ toggle, setToggle ] = createSignal(2)
     const rotate = createMemo(() => toggle()? "" : "rotate-180")

@@ -129,7 +129,7 @@ export type IAnimeDetailed = {
         "type": string,
         "title": string
     }[],
-    "aired": any,
+    "aired": string,
 }
 
 export type ITop<T> = { 
@@ -148,16 +148,16 @@ export type ITop<T> = {
 
 
 
-type ICategories = Partial<{ 
+type IContentTypes = Partial<{ 
     sfw: string[]
     nsfw: string[]
-    /* [key: string]: string[] */
 }>
 
+type ICategory = { url: string }[]
+
 export type ICategoriesStore = { 
-    cats: any
-    list: {url: string}[]
-    /* [key: string]: any */
+    cats: Record<string, ICategory>
+    list: ICategory
 }
 
 type IResponses = {
@@ -170,9 +170,9 @@ type IResponses = {
 export const [ selectedItem, setItem ] = createSignal<Partial<IAnime & ICharacter>>({} as IAnime)
 export const primary_color = "bg-cyan-400"
 
-export const categoriesFull: ICategories = {
-    sfw: [
-        'waifu', 'neko', 'shinobu', 'awoo', 'wink', 'blush', 'bite', 'megumin', 'cuddle', 'pat', 'poke', 
+export const categoriesFull: IContentTypes = {
+    sfw: [ // 'shinobu', 'awoo', 
+        'waifu', 'neko', 'wink', 'blush', 'bite', 'megumin', 'cuddle', 'pat', 'poke', 
 
         'kitsune', 'sleep', 'peck', 'tickle', 'think', 'feed', 'yawn', 'baka', 'nod', 'nope', 'pout', 
         'thumbsup', 'laugh', 
@@ -186,7 +186,7 @@ export const categoriesNSFW = {
     ]
 }
 
-export const test: ICategories = {
+export const test: IContentTypes = {
     "sfw": [ 
       "waifu",
       "maid", "marin-kitagawa", "mori-calliope", "raiden-shogun", "oppai", "selfies", "uniform", "kamisato-ayaka"
@@ -198,33 +198,39 @@ export const tagList = Array.from(tagsSet)
 
 
 
-export async function get_images(link: string, categories: ICategories, mode: 'list' | 'cats') { 
-    if ( link && (mode !== undefined) && (categories.sfw?.length || categories.nsfw?.length) ) { 
+export async function get_images(link: string, contentTypes: IContentTypes, mode: keyof ICategoriesStore) { 
+    if ( link && (mode !== undefined) && (contentTypes.sfw?.length || contentTypes.nsfw?.length) ) { 
             const requests: Promise<ICategoriesStore | void | null>[] = []
             const images: ICategoriesStore = { 
                 list: [],
                 cats: {}
             }
-            const keys = Object.keys(categories) as (keyof ICategories)[]
-            for (let key of keys) {
-                categories[key]?.forEach(category => { if (key && category) { 
-                    let url = link.replace('{key}', key)
-                    url = url.replace('{category}', category)
-                    requests.push(fetch(url, {
-                        /* method: 'POST',
-                        body: JSON.stringify({exclude: []}) */
-                    } )
-                    .then(response => { 
-                        if (response.status === 200) { return response.json() }
-                        else { throw new Error() }
-                    } ).then( (res: IResponses) => res.results ?? res.images ?? res.url )
-                    .then(result => { if (result) {
-                            if (images[mode]?.length !== undefined) { images[mode]?.push(result) }
-                            else if ( !images[mode][category] ) { images[mode][category] = result }
-                            else { images[mode][category]?.push(result) }
 
-                    } } ).catch(e => null) )
-                } } )
+            const keys = Object.keys(contentTypes) as (keyof IContentTypes)[]
+            for (let key of keys) {
+                contentTypes[key]?.forEach(category => { 
+                    if (key && category) { 
+                        let url = link.replace('{key}', key)
+                        url = url.replace('{category}', category)
+                        requests.push(fetch(url, {
+                            /* method: 'POST',
+                            body: JSON.stringify({exclude: []}) */
+                        } )
+                        .then(response => { 
+                            if (response.status === 200) { return response.json() }
+                            else { throw new Error() }
+
+                        } ).then( (res) => res?.results ?? res?.images ?? [res] )
+                        .then( (result: ICategory) => { 
+                            if (result) {
+                                if (images[mode as 'list']?.length !== undefined) { images[mode as 'list']?.push(...result) }
+                                else if ( !images[mode as 'cats'][category] ) { images[mode as 'cats'][category] = result }
+                                else { images[mode as 'cats'][category]?.push(...result) }
+
+                            } 
+                        } ).catch(e => null) )
+                    } 
+                } )
             }
 
             return await Promise.all(requests).then( () => {
@@ -236,23 +242,28 @@ export async function get_images(link: string, categories: ICategories, mode: 'l
 }
 
 
-export async function sfwHandler(freshNew: string[]) {
-    const images = await get_images(
+export async function sfwHandler(freshNew: string[]) { 
+    /* broken routes:
+        shinobu, awoo
+    */
+
+    const images = await get_images( 
         `https://nekos.best/api/v2/{category}?amount=${"4"}`, 
         { sfw: freshNew?.filter(e => categoriesFull.sfw?.includes(e)) }, 
         'cats'
-    )
+    ) as ICategoriesStore['cats']
 
-    const images2 = await get_images(
+    const images2 = await get_images( 
         `https://api.waifu.im/search?included_tags={category}&many=true`, 
         { sfw: freshNew?.filter(e => test.sfw?.includes(e)) }, 
         'cats'
-    )
+    ) as ICategoriesStore['cats']
 
     const result = { ...images }
     Object.keys(images2).forEach(category => { 
-        result[category] = [ ...images[category], ...images2[category] ]
+        result[category] = [ ...result[category], ...images2[category] ]
     })
+
     return result
 }
 
@@ -278,7 +289,7 @@ export function randomize() {
 
 
 
-export const categoriesBase: ICategories = { 
+export const categoriesBase: IContentTypes = { 
     sfw: [
         'waifu', 'neko', 'shinobu', 'awoo', 'wink', 'blush', 'bite', 'megumin', 'cuddle', 'pat', 'poke', 
     ],

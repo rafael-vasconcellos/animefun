@@ -9,8 +9,15 @@ import './style.css'
 type ISearchState = Partial<{
     chars: ICharacter[]
     animes: IAnime[]
-    /* [key: string]: any[] */
 }>
+
+
+async function fetchData(url: string) { 
+    return await fetch(url).then(response => { 
+        if (response.status === 200) { return response.json() } 
+        else { return {} as Record<string, unknown>}
+    } )
+}
 
 class SearchHandler { 
     public value: string = ''
@@ -30,8 +37,8 @@ class SearchHandler {
 
     async fetch() {
         if (this.value.length >= 4) { 
-            const animes = await fetch(`https://api.jikan.moe/v4/anime?q=${this.value}&order_by=popularity`).then(response => { if (response.status === 200) { return response.json() }    else { return {} as {[key: string]: any}}} )
-            const characters = await fetch(`https://api.jikan.moe/v4/characters?q=${this.value}&order_by=favorites&sort=desc`).then(response => { if (response.status === 200) { return response.json() }    else { return {} as {[key: string]: any}}} )
+            const animes = await fetchData(`https://api.jikan.moe/v4/anime?q=${this.value}&order_by=popularity`)
+            const characters = await fetchData(`https://api.jikan.moe/v4/characters?q=${this.value}&order_by=favorites&sort=desc`)
             if (characters?.data?.length) { return( {
                     chars: characters?.data?.slice(0, 4) ?? [],
                     animes: animes?.data?.slice(0, 4) ?? [],

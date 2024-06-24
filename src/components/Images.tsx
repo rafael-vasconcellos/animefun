@@ -9,7 +9,7 @@ import { visibility } from '../Home'
 
 type IImagesProps = { 
     tagList: string[]
-    callback(freshNew: string[]): Promise<any>
+    callback(freshNew: string[]): Promise<unknown>
     visibilityC?: number
     placeholder?: string[]
     search?: string
